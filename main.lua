@@ -8,10 +8,11 @@ function love.load()
 	JSON = require("json");
 	love.keyboard.setKeyRepeat(true);
 	UI_Functions.MenuisVisible = true;
+	background = love.graphics.newImage("Background.png");
 	font = love.graphics.newFont("radiospace.ttf", 20)
 	love.graphics.setNewFont("radiospace.ttf",20);
 	Save = JSON.decode(Data.returnData());
-	if not Save[1] then
+	if Save[1] == false then
 		Save = {};
 		print("Instantiating Data");
 	end
@@ -90,10 +91,13 @@ end
 
 function love.draw()
 	love.graphics.setColor(255,255,255);
+	love.graphics.draw(background,0,0,0,1.01);
 	if UI_Functions.MenuisVisible then
 		if Data.accountReady then
 			love.graphics.setColor(0,0,0);
-		--	love.graphics.print("Welcome back, "..Save["fname"].." "..Save["lname"].."!", ((795)-font:getWidth("Welcome back, "..Save["fname"].." "..Save["lname"].."!")), 575)
+			UI_Functions.Buttons[1].State = "Enter";
+			UI_Functions.Buttons[1].Text = "Enter";
+			love.graphics.print("Welcome back, "..Save["fname"].." "..Save["lname"].."!", ((795)-font:getWidth("Welcome back, "..Save["fname"].." "..Save["lname"].."!")), 575)
 		else
 			love.graphics.print("Welcome new user!", ((795)-font:getWidth("Welcome new user!")), 575)
 		end
@@ -109,7 +113,7 @@ function love.draw()
 			v.X = UI.centerX(v.SX);
 			v.Y = UI.fracScreen("y",.5) + UI.fracScreen("y",(.15*(i)));
 			love.graphics.draw(v.Image,v.X,v.Y,0);
-			love.graphics.setColor(255/2,255/2,255);
+			love.graphics.setColor(62,170,242);
 			love.graphics.print(v.Text, ((v.X+(v.SX/2))-font:getWidth(v.Text)/2), v.Y+(v.SY/2)-10)
 			end
 		end
@@ -124,7 +128,7 @@ function love.draw()
 			v.X = UI.centerX(v.SX);
 			v.Y = UI.fracScreen("y",.3) + UI.fracScreen("y",(.15*(i)));
 			love.graphics.draw(v.Image,v.X,v.Y,0);
-			love.graphics.setColor(255/2,255/2,255);
+			love.graphics.setColor(62,170,242);
 			love.graphics.print(v.Text, ((v.X+(v.SX/2))-font:getWidth(v.Text)/2), v.Y+(v.SY/2)-10)
 			love.graphics.setColor(0,0,0);
 			love.graphics.print(v.Label,((v.X)-(font:getWidth(v.Label)))-10, v.Y+(v.SY/2)-10);
@@ -137,9 +141,8 @@ function love.draw()
 			UI_Functions.Register.Submit.X = UI.centerX(UI_Functions.Register.Submit.SX);
 			UI_Functions.Register.Submit.Y = UI.fracScreen("y",.3) + UI.fracScreen("y",(.15*(3)));
 			love.graphics.draw(UI_Functions.Register.Submit.Image,UI_Functions.Register.Submit.X,UI_Functions.Register.Submit.Y,0);
-			love.graphics.setColor(255/2,255/2,255);
+			love.graphics.setColor(62,170,242);
 			love.graphics.print(UI_Functions.Register.Submit.Text, ((UI_Functions.Register.Submit.X+(UI_Functions.Register.Submit.SX/2))-font:getWidth(UI_Functions.Register.Submit.Text)/2), UI_Functions.Register.Submit.Y+(UI_Functions.Register.Submit.SY/2)-10)
 		end
 	end
-
 end

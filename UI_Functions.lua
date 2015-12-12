@@ -26,14 +26,18 @@ button1.Color = {}
 button1.SX = 0;
 button1.SY = 0;
 button1.X = 0;
+button1.State = "Register";
 button1.Y = 0;
 button1.Image = UI_Functions.Images.Normal;
 button1.Text = "Register";
 button1.Visible = true;
 button1.Clicked = function()
-	UI_Functions.MenuisVisible = false;
-	UI_Functions.Register.Visible = true;
-	print("Opened!")
+	if button1.State == "Register" then
+		UI_Functions.MenuisVisible = false;
+		UI_Functions.Register.Visible = true;
+	else
+		UI_Functions.MenuisVisible = false;
+	end
 end
 table.insert(UI_Functions.Buttons,button1);
 
@@ -73,9 +77,9 @@ UI_Functions.Register.Submit.Image = UI_Functions.Images.Normal;
 UI_Functions.Register.Submit.Text = "Submit";
 UI_Functions.Register.Submit.Visible = true;
 UI_Functions.Register.Submit.Clicked = function()
-	print("hi")
 	if(#Input1.Text > 0 and #Input2.Text > 0) then
-		print("Also hi")
+		UI_Functions.MenuisVisible = true;
+		UI_Functions.Register.Visible = false;
 		return true;
 	end
 end
