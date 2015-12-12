@@ -1,36 +1,103 @@
 love.graphics.setBackgroundColor(150,150,255);
+success = love.window.setIcon(love.image.newImageData("Icon.png"));
+print(success)
 function love.load()
+	utf8 = require("utf8");
 	UI = require("UI_Functions");
-	MenuisVisible = true;
+	Data = require("Data");
+	JSON = require("json");
+	love.keyboard.setKeyRepeat(true);
+	UI_Functions.MenuisVisible = true;
 	font = love.graphics.newFont("radiospace.ttf", 20)
 	love.graphics.setNewFont("radiospace.ttf",20);
+	Save = JSON.decode(Data.returnData());
+	if not Save[1] then
+		Save = {};
+		print("Instantiating Data");
+	end
+end
+
+function love.textinput(t)
+	if UI_Functions.Selected ~= nil then
+		print("Input: "..UI_Functions.SelectedNumber);
+		UI_Functions.Register.TextBoxes[UI_Functions.SelectedNumber].Text = UI_Functions.Register.TextBoxes[UI_Functions.SelectedNumber].Text..t;
+	end
+end
+
+function love.keypressed(key)
+    if key == "backspace" and UI_Functions.Selected ~= nil then
+        local byteoffset = utf8.offset(UI_Functions.Register.TextBoxes[UI_Functions.SelectedNumber].Text, -1)
+        if byteoffset then
+            UI_Functions.Register.TextBoxes[UI_Functions.SelectedNumber].Text = string.sub(UI_Functions.Register.TextBoxes[UI_Functions.SelectedNumber].Text, 1, byteoffset - 1)
+        end
+    elseif key == "return" then
+    	UI_Functions.Selected = nil;
+    end
 end
 
 function love.update()
 	local X = love.mouse.getX();
 	local Y = love.mouse.getY();
-	for i,v in pairs(UI.Buttons) do
-		if(X >= v.X and X <= (v.X+v.SX) and Y >= v.Y and Y <= (v.Y+v.SY)) then
-			v.Image = UI_Functions.Images.Hover;
+	if UI_Functions.MenuisVisible then
+		for i,v in pairs(UI.Buttons) do
+			if(X >= v.X and X <= (v.X+v.SX) and Y >= v.Y and Y <= (v.Y+v.SY)) then
+				v.Image = UI_Functions.Images.Hover;
+				else
+				v.Image = UI_Functions.Images.Normal;
+			end
+		end
+	end
+	if UI_Functions.Register.Visible then
+		if(X >= UI_Functions.Register.Submit.X and X <= (UI_Functions.Register.Submit.X+UI_Functions.Register.Submit.SX) and Y >= UI_Functions.Register.Submit.Y and Y <= (UI_Functions.Register.Submit.Y+UI_Functions.Register.Submit.SY)) then
+			UI_Functions.Register.Submit.Image = UI_Functions.Images.Hover;
 			else
-			v.Image = UI_Functions.Images.Normal;
+			UI_Functions.Register.Submit.Image = UI_Functions.Images.Normal;
 		end
 	end
 end
 
 function love.mousepressed(X,Y,button)
-	if MenuisVisible and button == 'l' then
+	if UI_Functions.MenuisVisible and button == 'l' then
 		for i,v in pairs(UI.Buttons) do
 			if(X >= v.X and X <= (v.X+v.SX) and Y >= v.Y and Y <= (v.Y+v.SY)) then
 				v.Clicked();
 			end
 		end
  	end
+ 	Selected = false;
+ 	if UI_Functions.Register.Visible then
+ 		for i,v in pairs(UI_Functions.Register.TextBoxes) do
+	 		if(X >= v.X and X <= (v.X+v.SX) and Y >= v.Y and Y <= (v.Y+v.SY)) then
+	 			UI_Functions.Selected = v;
+	 			UI_Functions.SelectedNumber = i;
+	 			Selected = true;
+	 			print("Clicked")
+	 		end
+	 		if not Selected then
+	 			UI_Functions.Selected = nil;
+	 		end
+	 	end
+	 	if(X >= UI_Functions.Register.Submit.X and X <= (UI_Functions.Register.Submit.X+UI_Functions.Register.Submit.SX) and Y >= UI_Functions.Register.Submit.Y and Y <= (UI_Functions.Register.Submit.Y+UI_Functions.Register.Submit.SY)) then
+			if UI_Functions.Register.Submit.Clicked() == true then
+				print("Hias")
+				Save["fname"] = UI_Functions.Register.TextBoxes[1].Text;
+				Save["lname"] = UI_Functions.Register.TextBoxes[2].Text;
+				Data.saveData(JSON.encode(Save));
+			end 
+		end
+ 	end
 end
 
 function love.draw()
 	love.graphics.setColor(255,255,255);
-	if MenuisVisible then
+	if UI_Functions.MenuisVisible then
+		if Data.accountReady then
+			love.graphics.setColor(0,0,0);
+		--	love.graphics.print("Welcome back, "..Save["fname"].." "..Save["lname"].."!", ((795)-font:getWidth("Welcome back, "..Save["fname"].." "..Save["lname"].."!")), 575)
+		else
+			love.graphics.print("Welcome new user!", ((795)-font:getWidth("Welcome new user!")), 575)
+		end
+		love.graphics.setColor(255,255,255);
 		local menuSizeX = UI.fracScreen("x",.5);
 		love.graphics.rectangle("fill",UI.centerX(menuSizeX),UI.fracScreen("y",.2),menuSizeX,UI.fracScreen("y",.2));
 		love.graphics.print(#UI.Buttons);
@@ -44,7 +111,35 @@ function love.draw()
 			love.graphics.draw(v.Image,v.X,v.Y,0);
 			love.graphics.setColor(255/2,255/2,255);
 			love.graphics.print(v.Text, ((v.X+(v.SX/2))-font:getWidth(v.Text)/2), v.Y+(v.SY/2)-10)
-		end
+			end
 		end
 	end
+	if UI_Functions.Register.Visible then
+		local menuSizeX = UI.fracScreen("x",.5);
+		love.graphics.rectangle("fill",UI.centerX(menuSizeX),UI.fracScreen("y",.2),menuSizeX,UI.fracScreen("y",.2));
+		for i,v in ipairs(UI_Functions.Register.TextBoxes) do
+			love.graphics.setColor(255,255,255);
+			v.SX = UI.fracScreen("x",.25);
+			v.SY = UI.fracScreen("y",.1);
+			v.X = UI.centerX(v.SX);
+			v.Y = UI.fracScreen("y",.3) + UI.fracScreen("y",(.15*(i)));
+			love.graphics.draw(v.Image,v.X,v.Y,0);
+			love.graphics.setColor(255/2,255/2,255);
+			love.graphics.print(v.Text, ((v.X+(v.SX/2))-font:getWidth(v.Text)/2), v.Y+(v.SY/2)-10)
+			love.graphics.setColor(0,0,0);
+			love.graphics.print(v.Label,((v.X)-(font:getWidth(v.Label)))-10, v.Y+(v.SY/2)-10);
+		end
+
+		love.graphics.setColor(255,255,255);
+		if UI_Functions.Register.Submit.Visible then
+			UI_Functions.Register.Submit.SX = UI.fracScreen("x",.25);
+			UI_Functions.Register.Submit.SY = UI.fracScreen("y",.1);
+			UI_Functions.Register.Submit.X = UI.centerX(UI_Functions.Register.Submit.SX);
+			UI_Functions.Register.Submit.Y = UI.fracScreen("y",.3) + UI.fracScreen("y",(.15*(3)));
+			love.graphics.draw(UI_Functions.Register.Submit.Image,UI_Functions.Register.Submit.X,UI_Functions.Register.Submit.Y,0);
+			love.graphics.setColor(255/2,255/2,255);
+			love.graphics.print(UI_Functions.Register.Submit.Text, ((UI_Functions.Register.Submit.X+(UI_Functions.Register.Submit.SX/2))-font:getWidth(UI_Functions.Register.Submit.Text)/2), UI_Functions.Register.Submit.Y+(UI_Functions.Register.Submit.SY/2)-10)
+		end
+	end
+
 end

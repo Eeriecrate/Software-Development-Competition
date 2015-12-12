@@ -1,4 +1,5 @@
 UI_Functions = {};
+UI_Functions.MenuisVisible = true;
 
 UI_Functions.fracScreen = function(Axis,Frac)
 	if Axis:lower() == "x" then
@@ -13,10 +14,12 @@ UI_Functions.centerX = function(SizeX)
 end
 
 UI_Functions.Buttons = {};
+UI_Functions.Selected = nil;
+UI_Functions.SelectedNumber = nil;
 
 UI_Functions.Images = {};
 UI_Functions.Images.Normal = love.graphics.newImage("Button.png");
-UI_Functions.Images.Hover = love.graphics.newImage("Button2.png");
+UI_Functions.Images.Hover = love.graphics.newImage("Button1.png");
 
 button1 = {};
 button1.Color = {}
@@ -24,26 +27,58 @@ button1.SX = 0;
 button1.SY = 0;
 button1.X = 0;
 button1.Y = 0;
-button1.Image = lUI_Functions.Images.Normal;
+button1.Image = UI_Functions.Images.Normal;
 button1.Text = "Register";
 button1.Visible = true;
 button1.Clicked = function()
-	button1.Visible = false;
+	UI_Functions.MenuisVisible = false;
+	UI_Functions.Register.Visible = true;
+	print("Opened!")
 end
 table.insert(UI_Functions.Buttons,button1);
 
-button2 = {};
-button2.SX = 0;
-button2.SY = 0;
-button2.X = 0;
-button2.Y = 0;
-button2.Image = UI_Functions.Images.Normal;
-button2.Text = "";
-button2.Visible = true;
-button2.Clicked = function()
-	button2.Visible = false;
+UI_Functions.Register = {};
+UI_Functions.Register.Visible = false;
+UI_Functions.Register.Buttons = {};
+UI_Functions.Register.TextBoxes = {};
+UI_Functions.Register.TextBosesVisible = true;
+
+Input1 = {};
+Input1.X = 0;
+Input1.Y = 0;
+Input1.SX = 0;
+Input1.SY = 0;
+Input1.Image = UI_Functions.Images.Normal;
+Input1.Label = "First Name";
+Input1.Text = "";
+table.insert(UI_Functions.Register.TextBoxes,Input1);
+
+Input2 = {};
+Input2.X = 0;
+Input2.Y = 0;
+Input2.SX = 0;
+Input2.SY = 0;
+Input2.Image = UI_Functions.Images.Normal;
+Input2.Label = "Last Name";
+Input2.Text = "";
+table.insert(UI_Functions.Register.TextBoxes,Input2);
+
+UI_Functions.Register.Submit = {};
+UI_Functions.Register.Submit.Color = {}
+UI_Functions.Register.Submit.SX = 0;
+UI_Functions.Register.Submit.SY = 0;
+UI_Functions.Register.Submit.X = 0;
+UI_Functions.Register.Submit.Y = 0;
+UI_Functions.Register.Submit.Image = UI_Functions.Images.Normal;
+UI_Functions.Register.Submit.Text = "Submit";
+UI_Functions.Register.Submit.Visible = true;
+UI_Functions.Register.Submit.Clicked = function()
+	print("hi")
+	if(#Input1.Text > 0 and #Input2.Text > 0) then
+		print("Also hi")
+		return true;
+	end
 end
-table.insert(UI_Functions.Buttons,button2);
 
 
 return UI_Functions;

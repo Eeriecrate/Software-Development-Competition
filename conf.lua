@@ -2,9 +2,9 @@ function love.conf(t)
     t.identity = nil                   
     t.version = "0.9.2"                
     t.console = true                 
-
-    t.window.title = "TSA Development"       
-    --t.window.icon = ""               
+    
+    t.window.title = "StudyHub"       
+    t.window.icon = "Icon.png"               
     t.window.width = 800             
     t.window.height = 600           
     t.window.borderless = false       
