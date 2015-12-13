@@ -1,5 +1,6 @@
 UI_Functions = {};
 UI_Functions.MenuisVisible = true;
+UI_Functions.MainMenu = false;
 
 UI_Functions.fracScreen = function(Axis,Frac)
 	if Axis:lower() == "x" then
@@ -37,6 +38,7 @@ button1.Clicked = function()
 		UI_Functions.Register.Visible = true;
 	else
 		UI_Functions.MenuisVisible = false;
+		UI_Functions.MainMenu = true;
 	end
 end
 table.insert(UI_Functions.Buttons,button1);
@@ -84,5 +86,70 @@ UI_Functions.Register.Submit.Clicked = function()
 	end
 end
 
+
+--[[]]--
+
+
+--[[]]--
+
+
+UI_Functions.Main = {};
+UI_Functions.Main.Buttons = {};
+
+local button = {};
+button.Color = {}
+button.SX = 0;
+button.SY = 0;
+button.X = 0;
+button.Y = 0;
+button.Image = UI_Functions.Images.Normal;
+button.Text = "Notes";
+button.Visible = true;
+button.Clicked = function()
+
+end
+table.insert(UI_Functions.Main.Buttons,button);
+
+local button = {};
+button.Color = {}
+button.SX = 0;
+button.SY = 0;
+button.X = 0;
+button.Y = 0;
+button.Image = UI_Functions.Images.Normal;
+button.Text = "Homework";
+button.Visible = true;
+button.Clicked = function()
+
+end
+table.insert(UI_Functions.Main.Buttons,button);
+
+local button = {};
+button.Color = {}
+button.SX = 0;
+button.SY = 0;
+button.X = 0;
+button.Y = 0;
+button.Image = UI_Functions.Images.Normal;
+button.Text = "Deez";
+button.Visible = true;
+button.Clicked = function()
+
+end
+table.insert(UI_Functions.Main.Buttons,button);
+
+local button = {};
+button.Color = {}
+button.SX = 0;
+button.SY = 0;
+button.X = 0;
+button.Y = 0;
+button.Image = UI_Functions.Images.Normal;
+button.Text = "Nutz";
+button.Visible = true;
+button.Clicked = function()
+
+end
+table.insert(UI_Functions.Main.Buttons,button);
 
 return UI_Functions;

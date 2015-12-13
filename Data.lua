@@ -20,6 +20,7 @@ Data.saveData = function(data)
 	file = io.open("data.txt","w+")
 	file:write(data)
 	file:close();
+	Data.accountReady = true;
 end
 
 return Data;
