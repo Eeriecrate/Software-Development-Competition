@@ -131,7 +131,7 @@ button.SY = 0;
 button.X = 0;
 button.Y = 0;
 button.Image = UI_Functions.Images.Normal;
-button.Text = "Deez";
+button.Text = "Tanner is";
 button.Visible = true;
 button.Clicked = function()
 
@@ -145,7 +145,7 @@ button.SY = 0;
 button.X = 0;
 button.Y = 0;
 button.Image = UI_Functions.Images.Normal;
-button.Text = "Nutz";
+button.Text = "awesome!";
 button.Visible = true;
 button.Clicked = function()
 
