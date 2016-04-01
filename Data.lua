@@ -17,7 +17,7 @@ Data.accountReady = false;
 end
 
 Data.saveData = function(data)
-	file = io.open("data.txt","w+")
+	file = assert(io.open("data.txt","w+"));
 	file:write(data)
 	file:close();
 	Data.accountReady = true;
