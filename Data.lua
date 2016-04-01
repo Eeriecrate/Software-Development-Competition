@@ -2,13 +2,9 @@ Data = {};
 
 Data.accountReady = false;
 
-	Data.returnData = function()
-	if io.open("data.txt","r") ~= nil then
-		local f = assert(io.open("data.txt", "r"))
-    	local content = f:read("*all")
-    	f:close()
-    	Data.accountReady = true;
-		return content;
+	Data.returnData = function(name)
+	if love.filesystem.exists(name..".lua") then
+		return love.filesystem.read(name..".lua");
 	else
 		print("Not found!");
 		x = "[false]";
@@ -16,11 +12,15 @@ Data.accountReady = false;
 	end
 end
 
-Data.saveData = function(data)
-	file = assert(io.open("data.txt","w+"));
-	file:write(data)
-	file:close();
-	Data.accountReady = true;
+Data.saveData = function(name,data)
+	print(data)
+	if love.filesystem.exists(name..".lua") then
+		love.filesystem.write(name..".lua",data);
+		Data.accountReady = true;
+	else
+		love.filesystem.newFileData(data,name..".lua","file");
+		Data.accountReady = true;
+	end
 end
 
 return Data;

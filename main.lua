@@ -13,7 +13,7 @@ function love.load()
 	background = love.graphics.newImage("Background.png");
 	font = love.graphics.newFont("radiospace.ttf", 20)
 	love.graphics.setNewFont("radiospace.ttf",20);
-	Save = JSON.decode(Data.returnData());
+	Save = JSON.decode(Data.returnData("data"));
 	if Save[1] == false then
 		Save = {};
 	end
@@ -100,7 +100,7 @@ function love.mousepressed(X,Y,button)
 			if UI_Functions.Register.Submit.Clicked() == true then
 				Save["fname"] = UI_Functions.Register.TextBoxes[1].Text;
 				Save["lname"] = UI_Functions.Register.TextBoxes[2].Text;
-				Data.saveData(JSON.encode(Save));
+				Data.saveData("data",JSON.encode(Save));
 			end 
 		end
  	end
@@ -134,6 +134,9 @@ function love.draw()
 			end
 		end
 	end
+
+--[[Part where the input output comes out]]--
+
 	if UI_Functions.Register.Visible then
 		local menuSizeX = UI.fracScreen("x",.5);
 		love.graphics.rectangle("fill",UI.centerX(menuSizeX),UI.fracScreen("y",.2),menuSizeX,UI.fracScreen("y",.2));
